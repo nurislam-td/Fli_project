@@ -6,6 +6,7 @@ from database.databaseConnection import db_helper
 from database.models import Base, Airport
 from sqlalchemy import select
 from sqlalchemy.engine import Result
+from api_v1 import router as router_v1
 
 
 @asynccontextmanager
@@ -16,7 +17,7 @@ async def lifespan(app: FastAPI):
 
 
 app = FastAPI(lifespan=lifespan)
-
+app.include_router(router=router_v1, prefix="/api/v1")
 origins = [
     "http://localhost:3000",
     "http://localhost",
@@ -36,18 +37,19 @@ async def main():
     return {"message": "Hello World"}
 
 
-@app.get("/airports")
-async def get_airports():
-    async with db_helper.engine.begin() as conn:
-        query = select(Airport)
-        result: Result = await conn.execute(query)
-        data = result.mappings().all()
-    return data
-
-
-@app.get("/root")
-def get_root():
-    return {"message": "this is root"}
+#
+# @app.get("/airports")
+# async def get_airports():
+#     async with db_helper.engine.begin() as conn:
+#         query = select(Airport)
+#         result: Result = await conn.execute(query)
+#         data = result.mappings().all()
+#     return data
+#
+#
+# @app.get("/root")
+# def get_root():
+#     return {"message": "this is root"}
 
 
 if __name__ == "__main__":
