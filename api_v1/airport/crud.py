@@ -6,16 +6,15 @@ from sqlalchemy import select
 from .schemas import AirportCreate, AirportUpdate, AirportUpdatePartial
 
 
+async def get_airport(session: AsyncSession, airport_id: int) -> Airport | None:
+    return await session.get(Airport, airport_id)
+
+
 async def get_airports(session: AsyncSession) -> list[Airport]:
     stmt = select(Airport)
     result: Result = await session.execute(stmt)
     airports = result.scalars().all()
-    print(type(airports))
     return list(airports)
-
-
-async def get_airport(session: AsyncSession, airport_id: int) -> Airport | None:
-    return await session.get(Airport, airport_id)
 
 
 async def create_airport(session: AsyncSession, airport_in: AirportCreate) -> Airport:

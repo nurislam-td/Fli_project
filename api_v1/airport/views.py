@@ -1,4 +1,4 @@
-from fastapi import APIRouter, HTTPException, status, Depends
+from fastapi import APIRouter, Depends
 from sqlalchemy.ext.asyncio import AsyncSession
 from database.databaseConnection import db_helper
 from . import crud
@@ -15,11 +15,11 @@ async def get_airports(
     return await crud.get_airports(session=session)
 
 
-@router.get("/{airport_id}", response_model=Airport | None)
+@router.get("/{airport_id}", response_model=Airport)
 async def get_airport(
     airport: Airport = Depends(airport_by_id),
 ):
-    return await airport
+    return airport
 
 
 @router.post("/", response_model=Airport)
