@@ -15,7 +15,8 @@ async def lifespan(app: FastAPI):
 app = FastAPI(lifespan=lifespan)
 app.include_router(router=router_v1, prefix="/api/v1")
 origins = [
-    "http://localhost:3000",
+    "http://localhost:5173/airport",
+    "http://localhost:5173",
     "http://localhost",
 ]
 
